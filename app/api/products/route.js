@@ -1,4 +1,4 @@
-import prisma from "@/app/libs/Prisma";
+/*import prisma from "@/app/libs/Prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -10,31 +10,16 @@ export async function GET() {
         return new NextResponse('Something went wrong', { status: 400 });
     }
 }
-
-/*import prisma from "@/app/libs/Prisma";
+*/
+import prisma from "@/app/libs/Prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(req, context) {
+export async function GET() {
     try {
-        const { query } = req;
-        const name = query.name;
-
-        const items = await prisma.products.findMany({
-            take: 5,
-            where: {
-                title: {
-                    contains: name,
-                    mode: 'insensitive'
-                },
-            },
-        });
-
-        await prisma.$disconnect();
-        return NextResponse.json(items);
+        const products = await prisma.products.findMany();
+        return NextResponse.json(products);
     } catch (error) {
-        console.log(error);
-        await prisma.$disconnect();
-        return new NextResponse('Something went wrong', { status: 400 });
+        console.error('Error fetching products:', error);
+        return new NextResponse({ error: error.message }, { status: 500 });
     }
 }
-*/
